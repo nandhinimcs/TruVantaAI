@@ -1,6 +1,7 @@
 import logging
 from typing import Dict, Any, List
 from google import genai
+from google.genai import types
 from google.genai.errors import APIError
 from app.core.config import settings
 from app.services.brand_service import get_demo_brand_data, get_product_details
@@ -9,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 # Ordered list of supported Gemini models available to the current API key
 CANDIDATE_MODELS = [
-    "gemini-3.8-flash",
     "gemini-2.5-flash-lite",
+    "gemini-3.8-flash",
     "gemini-flash-latest",
     settings.GEMINI_MODEL,
 ]
@@ -88,13 +89,15 @@ Produce only the final marketing copy tailored for {content_type}. Ensure all cl
     for model_name in SUPPORTED_MODELS:
         try:
             logger.info("Attempting generation with model %s", model_name)
+            gen_config = types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.7,
+                thinking_config=types.ThinkingConfig(thinking_budget=0),
+            )
             response = client.models.generate_content(
                 model=model_name,
                 contents=prompt,
-                config={
-                    "system_instruction": system_instruction,
-                    "temperature": 0.7,
-                },
+                config=gen_config,
             )
             
             if response and response.text:
