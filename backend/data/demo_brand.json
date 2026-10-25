@@ -1,0 +1,67 @@
+{
+  "brand_name": "Lumina Skincare",
+  "disclaimer": "FICTIONAL DEMO DATA FOR TRUVANTA AI BRAND GOVERNANCE SYSTEM",
+  "identity": {
+    "tagline": "Pure Care for Everyday Balance",
+    "mission": "Empowering conscious self-care through gentle, transparent skincare formulations designed for daily harmony.",
+    "core_values": [
+      "Skin-first simplicity",
+      "Evidence-based honesty",
+      "Inclusive gentleness"
+    ]
+  },
+  "brand_voice": {
+    "primary_tone": "Professional, friendly, and trustworthy",
+    "style_rules": [
+      "Use clear, welcoming, and empowering language",
+      "Speak directly to customer skin well-being with warmth and empathy",
+      "Prioritize scientific transparency without overwhelming technical jargon",
+      "Maintain a calm, reassuring, and balanced communication style"
+    ]
+  },
+  "products": [
+    {
+      "id": "lumina-gentle-cleanser",
+      "name": "Lumina Gentle Face Cleanser",
+      "category": "Cleanser",
+      "is_fictional_demo": true,
+      "approved_facts": [
+        "Specifically formulated for daily gentle skin maintenance.",
+        "Mild, pH-balanced gel-to-foam texture.",
+        "Infused with soothing botanical extracts and gentle surfactants."
+      ],
+      "approved_benefits": [
+        "Removes everyday dirt and excess oil",
+        "Cleanses gently without stripping essential natural hydration",
+        "Leaves skin feeling fresh, soft, and balanced throughout the day"
+      ],
+      "restricted_claims": [
+        "Cures acne",
+        "Guaranteed results",
+        "Instant whitening",
+        "Clinically proven without evidence",
+        "Permanently eliminates blemishes",
+        "100% cure for dermatological conditions"
+      ],
+      "approved_key_ingredients": [
+        "Glycerin (hydration preservation)",
+        "Chamomile Flower Extract (calming)",
+        "Decyl Glucoside (mild coconut-derived cleansing agent)"
+      ]
+    }
+  ],
+  "governance_rules": {
+    "mandatory_guidelines": [
+      "All claims must strictly map to approved_benefits and approved_facts.",
+      "Never promise medical or permanent curative outcomes.",
+      "Clearly mention suitability for everyday cleansing without exaggerated superlatives."
+    ],
+    "prohibited_words_or_phrases": [
+      "cures acne",
+      "miracle cure",
+      "instant whitening",
+      "guaranteed results",
+      "clinically proven"
+    ]
+  }
+}
