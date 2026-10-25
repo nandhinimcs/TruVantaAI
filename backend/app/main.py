@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from app.core.config import settings
 from app.services.brand_service import get_demo_brand_data, get_product_details
 from app.services.gemini_service import generate_brand_content
+from app.services.verification_service import verify_content_compliance
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -116,4 +117,36 @@ def generate_content(request: GenerateRequest):
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail=f"Gemini generation error: {error_msg}",
+        )
+
+class VerifyRequest(BaseModel):
+    content: str = Field(..., description="Content payload to verify")
+    product: Optional[str] = Field(default="Lumina Gentle Face Cleanser", description="Product evaluated")
+    brand: Optional[str] = Field(default="Lumina Skincare", description="Brand name")
+
+@app.post("/verify", tags=["Content Verification"])
+def verify_content(request: VerifyRequest):
+    """
+    Verify draft content against brand guidelines, prohibited terms, and restricted claims.
+    Returns real compliance scorecards and actionable findings.
+    """
+    if not request.content or not request.content.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Content payload cannot be empty."
+        )
+
+    try:
+        results = verify_content_compliance(
+            content=request.content.strip(),
+            product_name=request.product or "Lumina Gentle Face Cleanser",
+            brand_name=request.brand or "Lumina Skincare",
+        )
+        return results
+    except ValueError as ve:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Verification failed: {str(e)}"
         )

@@ -135,3 +135,53 @@ export async function generateContent({ brand, product, contentType, audience, t
     error: lastError ? lastError.message : 'Failed to generate content',
   };
 }
+
+export async function verifyContent({ content, product, brand }) {
+  const urlsToTry = [
+    `${API_BASE_URL}/verify`,
+    `${DIRECT_BACKEND_URL}/verify`
+  ];
+
+  const payload = {
+    content,
+    product: product || 'Lumina Gentle Face Cleanser',
+    brand: brand || 'Lumina Skincare',
+  };
+
+  let lastError = null;
+
+  for (const url of urlsToTry) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responseData = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        const errorDetail = responseData?.detail || `HTTP ${response.status}: ${response.statusText}`;
+        throw new Error(errorDetail);
+      }
+
+      return {
+        success: true,
+        data: responseData,
+      };
+    } catch (err) {
+      lastError = err;
+      if (err.message && !err.message.includes('Failed to fetch') && !err.message.includes('NetworkError')) {
+        break;
+      }
+    }
+  }
+
+  return {
+    success: false,
+    error: lastError ? lastError.message : 'Failed to verify content',
+  };
+}
